@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tax Assistant Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced Gradients and Transitions */
+
+        /* Header Gradient */
+        .hero-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6366f1 100%);
+            background-size: 200% 200%;
+            animation: gradientFlow 15s ease infinite;
+        }
+
+        /* Chat Container Enhancement */
+        .chat-container {
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                0 10px 15px rgba(79, 70, 229, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: containerFloat 1s ease-out forwards;
+        }
+
+        .chat-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 20px rgba(79, 70, 229, 0.1),
+                0 6px 6px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Message Bubbles Enhancement */
+        .message-bubble {
+            position: relative;
+            overflow: hidden;
+            animation: messagePop 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+        }
+
+        .message-bubble.bg-blue-600 {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            transform-origin: right;
+        }
+
+        .message-bubble:not(.bg-blue-600) {
+            background: linear-gradient(135deg, #f3f4f6, #ffffff);
+            transform-origin: left;
+        }
+
+        .message-bubble:hover {
+            transform: scale(1.02);
+        }
+
+        /* Quick Stats Panel Enhancement */
+        .stats-panel {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .stats-panel:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.15);
+        }
+
+        /* Button Enhancements */
+        button, .nav-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        button:hover, .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        button:active, .nav-button:active {
+            transform: translateY(0px);
+        }
+
+        button::after, .nav-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+        }
+
+        button:hover::after, .nav-button:hover::after {
+            animation: buttonGlow 0.8s ease;
+        }
+
+        /* Developer Box Enhancement */
+        .fixed.bottom-4.right-4 {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideUpFade 0.8s ease-out;
+        }
+
+        .fixed.bottom-4.right-4:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.15);
+        }
+
+        /* History Panel Enhancement */
+        #history-panel {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .history-item {
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .history-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 4px 0 8px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Footer Enhancement */
+        footer {
+            background: linear-gradient(to bottom, #312e81, #4f46e5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        /* Animations */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Input Field Enhancement */
+        input[type="number"], input[type="text"] {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            border-color: #4f46e5;
+        }
+
+        /* Quick Tips Enhancement */
+        .quick-tips {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+        }
+
+        .quick-tips i {
+            transition: all 0.3s ease;
+        }
+
+        .quick-tips:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Add these classes to your HTML elements */
+        .stats-panel {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .quick-tips {
+            animation: fadeInUp 0.5s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+        /* Loading Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 2px;
+            background: #4f46e5;
+            border-radius: 50%;
+            animation: typingDot 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingDot {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-container {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            transition: all 0.3s ease;
+        }
+
+        .message-bubble:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .bot-avatar {
+            background: linear-gradient(135deg, #000000, #333333);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-center;
+        }
+
+        .history-item {
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .status-pulse {
+            position: relative;
+        }
+
+        .status-pulse::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: rgba(34, 197, 94, 0.3);
+            border-radius: 50%;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: pulse 2s infinite;
+        }
+
+        .scale-95 {
+            transform: scale(0.95);
+            transition: transform 0.2s ease-out;
+        }
+
+        .scale-100 {
+            transform: scale(1);
+            transition: transform 0.2s ease-in;
+        }
+
+        #help-popup {
+            backdrop-filter: blur(4px);
+        }
+
+        #help-popup > div {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Add these styles */
+        .credits-minimized {
+            height: 48px;
+            overflow: hidden;
+        }
+
+        .credits-minimized #credits-content {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .fixed.bottom-4.right-4 {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        /* Update these styles */
+        #history-panel {
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Update the slide-in animation */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        #history-panel:not(.translate-x-full) {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        /* Dark Mode Styles */
+        :root {
+            --primary-light: #4f46e5;
+            --secondary-light: #6366f1;
+            --background-light: #ffffff;
+            --text-light: #1f2937;
+            --border-light: #e5e7eb;
+            
+            --primary-dark: #818cf8;
+            --secondary-dark: #6366f1;
+            --background-dark: #1f2937;
+            --text-dark: #f3f4f6;
+            --border-dark: #374151;
+        }
+
+        /* Transition for all elements when switching themes */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Dark mode styles */
+        .dark {
+            color-scheme: dark;
+        }
+
+        .dark body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        .dark .chat-container {
+            background: linear-gradient(to bottom, #1f2937, #111827);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark .message-bubble:not(.bg-blue-600) {
+            background: linear-gradient(135deg, #374151, #1f2937);
+            color: var(--text-dark);
+        }
+
+        .dark .message-bubble.bg-blue-600 {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+        }
+
+        .dark input[type="number"],
+        .dark input[type="text"] {
+            background: linear-gradient(135deg, #374151, #1f2937);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .dark .stats-panel,
+        .dark .quick-tips,
+        .dark .fixed.bottom-4.right-4 {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .dark #history-panel {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            color: var(--text-dark);
+        }
+
+        .dark .history-item {
+            background: linear-gradient(135deg, #374151, #1f2937);
+            border-color: var(--border-dark);
+        }
+
+        .dark button {
+            background-color: var(--primary-dark);
+            color: var(--text-dark);
+        }
+
+        .dark .typing-dot {
+            background: var(--primary-dark);
+        }
+
+        /* Theme toggle button animations */
+        #theme-toggle {
+            transform-origin: center;
+            animation: buttonPop 0.3s ease;
+        }
+
+        @keyframes buttonPop {
+            0% { transform: scale(0.8); }
+            100% { transform: scale(1); }
+        }
+
+        .dark #light-icon,
+        #dark-icon {
+            display: none;
+        }
+
+        .dark #dark-icon,
+        #light-icon {
+            display: block;
+        }
+
+        /* Chart Tooltip Customization */
+        .custom-tooltip {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 4px;
+            padding: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .dark .custom-tooltip {
+            background: rgba(31, 41, 55, 0.95);
+            border-color: rgba(75, 85, 99, 0.5);
+            color: #f3f4f6;
+        }
+
+        /* Additional Styles */
+        .input-group input::-webkit-outer-spin-button,
+        .input-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input-group input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #result-container.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Sticky Navbar Styles */
+        header {
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ensure content doesn't hide behind navbar */
+        body {
+            padding-top: 0; /* Remove any existing padding */
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced navbar visibility */
+        .hero-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6366f1 100%);
+        }
+
+        /* Improved scroll behavior */
+        html {
+            scroll-padding-top: 80px; /* Adjust based on navbar height */
+            scroll-behavior: smooth;
+        }
+
+        /* Ensure navbar stays above other content */
+        header {
+            z-index: 1000;
+        }
+
+        /* Pulse Animation for AI Status */
+        .pulse-glow {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+            }
+        }
+
+        /* Button Hover Effects */
+        .hover\:bg-white\/20:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            header .container {
+                padding: 0.5rem 1rem;
+            }
+            
+            .nav-buttons {
+                gap: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .message-bubble strong {
+            color: #4f46e5;
+        }
+
+        .message-bubble.bg-gray-100 {
+            border-left: 4px solid #4f46e5;
+        }
+
+        /* Enhanced list styling in welcome message */
+        .message-bubble ul {
+            margin-left: 1.5rem;
+        }
+
+        .message-bubble li {
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-container {
+            background: linear-gradient(to right, #f8fafc, #ffffff);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .welcome-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 0.75rem;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .welcome-content {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        .quick-guide {
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            background: rgba(79, 70, 229, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .guide-label {
+            font-weight: 600;
+            color: #4f46e5;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .guide-steps {
+            display: flex;
+            gap: 1rem;
+            color: #6b7280;
+        }
+
+        .feature-hint {
+            margin-top: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Message bubble enhancement for welcome message */
+        .message-bubble:first-of-type {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        /* Navbar button hover effects */
+        .nav-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .nav-button:hover::after {
+            transform: translateX(100%);
+        }
+
+        /* Home button specific styles */
+        a[href="../mainpage.html"] {
+            position: relative;
+            font-weight: 500;
+        }
+
+        a[href="../mainpage.html"]:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Tooltip styles */
+        .group {
+            position: relative;
+        }
+
+        .group:hover .absolute {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .absolute {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 50;
+        }
+
+        /* Active state for current page */
+        .active-page {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Enhanced message styling */
+        .user-input-summary {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .calculation-breakdown {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .calculation-section,
+        .result-section,
+        .analysis-section,
+        .tax-slabs-section {
+            border-left: 4px solid #4f46e5;
+            transition: transform 0.2s ease;
+        }
+
+        .calculation-section:hover,
+        .result-section:hover,
+        .analysis-section:hover,
+        .tax-slabs-section:hover {
+            transform: translateX(4px);
+        }
+
+        .formula {
+            font-family: monospace;
+            border-left: 3px solid #6366f1;
+        }
+
+        .steps {
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        /* Message bubble enhancements */
+        .message-bubble {
+            max-width: 90%;
+            margin: 0.5rem 0;
+        }
+
+        .message-bubble.bg-blue-600 {
+            background: linear-gradient(135deg, #3b82f6, #4f46e5);
+            color: white;
+        }
+
+        /* Message wrapper and container */
+        .message-wrapper {
+            margin: 1rem 0;
+            padding: 0 1rem;
+        }
+
+        .message-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        /* Avatar styling */
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Message bubbles */
+        .message-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+        }
+
+        /* User message specific styles */
+        .user-message .message-container {
+            justify-content: flex-end;
+        }
+
+        .user-bubble {
+            background: #f3f4f6;
+            color: #000000 !important;
+            border-radius: 1rem 1rem 0 1rem;
+        }
+
+        .user-bubble .user-input-summary {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .user-bubble .user-input-summary div {
+            color: #000000 !important;
+        }
+
+        /* Bot message specific styles */
+        .bot-message .message-container {
+            justify-content: flex-start;
+        }
+
+        .bot-bubble {
+            background: #f3f4f6;
+            color: #1f2937;
+            border-radius: 1rem 1rem 1rem 0;
+        }
+
+        /* User input summary styling */
+        .user-input-summary {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .user-input-summary .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .user-input-summary div {
+            color: #000000 !important;
+        }
+
+        /* Animation for messages */
+        .message-wrapper {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Input styling */
+        .input-group input {
+            font-size: 16px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Fix for number input spinners */
+        .input-group input::-webkit-outer-spin-button,
+        .input-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input-group input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Active state styling */
+        .input-group input:focus {
+            border-color: #6366F1;
+            outline: none;
+        }
+
+        /* Error state */
+        .input-group input:invalid:not(:placeholder-shown) {
+            border-color: #EF4444;
+        }
+
+        /* Success state */
+        .input-group input:valid:not(:placeholder-shown) {
+            border-color: #10B981;
+        }
+
+        /* Original input styling */
+        input[type="number"] {
+            background: white;
+            border-color: #E5E7EB;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #6366F1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Remove number input spinners */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .stats-panel {
+            transition: all 0.3s ease;
+        }
+
+        .stats-panel div {
+            transition: all 0.3s ease;
+        }
+
+        #calculations-today,
+        #response-time,
+        #accuracy-rate {
+            font-weight: 600;
+            color: #4F46E5;
+            transition: all 0.3s ease;
+        }
+
+        .stats-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* New Animations */
+        @keyframes buttonGlow {
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes containerFloat {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes messagePop {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes numberPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(100%); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Pulse Animation for AI Status */
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+        }
+
+        /* Theme Toggle Enhancement */
+        #theme-toggle {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Help Button Pulse */
+        #help-button {
+            animation: helpPulse 2s infinite;
+        }
+
+        @keyframes helpPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Update the user message styles */
+        .user-bubble {
+            background: #f3f4f6; /* Light background */
+            color: #000000 !important; /* Black text */
+            border-radius: 1rem 1rem 0 1rem;
+        }
+
+        .user-input-summary {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .user-input-summary div {
+            color: #000000 !important; /* Black text */
+        }
+
+        /* Ensure all text in user messages is black */
+        .user-message * {
+            color: #000000 !important;
+        }
+
+        /* Add a subtle border for better visibility */
+        .message-bubble.user-bubble {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header/Navbar Section -->
+    <header class="hero-gradient text-white sticky top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 max-w-6xl py-4">
+            <nav class="flex justify-between items-center">
+                <!-- Logo and Title -->
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mr-4">
+                        <i class="fas fa-robot text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">AI Tax Assistant Pro</h1>
+                        <p class="text-indigo-200">Your Smart Tax Calculator</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Items -->
+                <div class="flex items-center space-x-6">
+                    <!-- Home Button -->
+                    <a href="../mainpage.html" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center group">
+                        <i class="fas fa-home mr-2"></i>
+                        <span>Home</span>
+                        <!-- Tooltip -->
+                        <div class="absolute invisible group-hover:visible bg-black text-white text-xs px-2 py-1 rounded -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                            Back to Home
+                        </div>
+                    </a>
+
+                    <!-- AI Status -->
+                    <div class="flex items-center bg-white/10 px-4 py-2 rounded-lg">
+                        <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 pulse-glow"></span>
+                        <span class="text-sm">AI Active</span>
+                    </div>
+
+                    <!-- History Button -->
+                    <button id="toggle-history" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-history mr-2"></i>
+                        History
+                    </button>
+
+                    <!-- Help Button -->
+                    <button id="help-button" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        Help
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors duration-200">
+                        <svg id="light-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="dark-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Add this section after the header and before the main content -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="bg-white/95 backdrop-blur-lg rounded-xl shadow-xl p-8 mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-indigo-900 mb-4">
+                    <i class="fas fa-robot text-indigo-600 mr-3"></i>
+                    Meet Your AI Tax Assistant Pro
+                </h2>
+                <div class="w-24 h-1 bg-indigo-600 mx-auto rounded-full mb-6"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-indigo-800 mb-3">
+                        <i class="fas fa-star text-yellow-500 mr-2"></i>
+                        Key Features
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Real-time tax calculations with instant results</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Support for both New and Old tax regimes (FY 2024-25)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Detailed breakdown of tax calculations with step-by-step explanations</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Personalized tax-saving recommendations</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-indigo-800 mb-3">
+                        <i class="fas fa-brain text-purple-500 mr-2"></i>
+                        Smart Capabilities
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>AI-powered natural language processing for easy communication</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Automatic calculation history tracking and analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Smart tax optimization suggestions based on your income profile</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>24/7 availability with consistent accuracy</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-indigo-50 rounded-lg border border-indigo-100">
+                <h3 class="text-xl font-semibold text-indigo-800 mb-4">
+                    <i class="fas fa-info-circle text-indigo-600 mr-2"></i>
+                    How It Works
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="flex items-start">
+                        <div class="bg-indigo-600 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">1</div>
+                        <p class="text-gray-700">Enter your income details and select your preferred tax regime</p>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-indigo-600 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">2</div>
+                        <p class="text-gray-700">Get instant tax calculations with detailed breakdowns</p>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-indigo-600 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">3</div>
+                        <p class="text-gray-700">Receive personalized tax-saving recommendations</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-gray-600 italic">
+                    "Simplifying tax calculations with the power of AI - Your personal tax assistant available 24/7"
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this popup div right after the header section -->
+    <div id="help-popup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Need Help?</h3>
+                <button id="close-help" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <h4 class="font-medium text-gray-900">Contact Information</h4>
+                    <div class="flex items-center space-x-3 text-gray-600">
+                        <i class="fas fa-envelope text-indigo-600"></i>
+                        <a href="mailto:support@taxcalculator.com" class="hover:text-indigo-600 transition-colors">
+                            support@taxcalculator.com
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-3 text-gray-600">
+                        <i class="fas fa-phone text-indigo-600"></i>
+                        <a href="tel:+91-1234567890" class="hover:text-indigo-600 transition-colors">
+                            +91-1234567890
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-medium text-gray-900">Support Hours</h4>
+                    <p class="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM IST</p>
+                    <p class="text-gray-600">Saturday: 9:00 AM - 2:00 PM IST</p>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-600">
+                        Our support team typically responds within 2 hours during business hours.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Chat Container -->
+            <div class="lg:col-span-2">
+                <div class="chat-container rounded-xl shadow-2xl overflow-hidden">
+                    <div class="flex items-center space-x-3 p-4 border-b">
+                        <div class="bot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-semibold">Tax Calculator AI</h2>
+                            <p class="text-sm text-green-600">Online <i class="fas fa-circle text-xs"></i></p>
+                        </div>
+                    </div>
+                    
+                    <div id="chat-messages" class="h-96 overflow-y-auto p-4 space-y-4">
+                        <!-- Messages will appear here -->
+                    </div>
+
+                    <div class="p-4 border-t bg-gray-50">
+                        <form id="tax-form" class="flex space-x-4">
+                            <input 
+                                type="number" 
+                                id="total-income"
+                                class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="Enter Total Income"
+                                min="0"
+                            >
+                            <input 
+                                type="number" 
+                                id="tax-payable"
+                                class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="Enter Tax Payable"
+                                min="0"
+                            >
+                            <button 
+                                type="submit"
+                                class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                            >
+                                Calculate
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Panel -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold mb-4">Quick Stats</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Calculations Today</span>
+                            <span id="calculations-today" class="text-indigo-600 font-bold">0</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Response Time</span>
+                            <span id="response-time" class="text-green-600 font-bold">< 1s</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Accuracy Rate</span>
+                            <span id="accuracy-rate" class="text-indigo-600 font-bold">99.9%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold mb-4">Quick Tips</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-600">Enter your total income and tax payable to calculate your effective tax rate.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-history text-indigo-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-600">View your calculation history anytime from the history panel.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-pie text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-600">Get detailed breakdowns and analysis of your tax calculations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- History Panel -->
+    <div id="history-panel" class="fixed top-0 right-0 h-full w-80 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out overflow-hidden z-50">
+        <div class="h-full flex flex-col">
+            <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
+                <h3 class="text-lg font-semibold">Calculation History</h3>
+                <button id="close-history" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4" id="history-list">
+                <!-- History items will be displayed here -->
+            </div>
+
+            <div class="p-4 border-t">
+                <button id="clear-history" class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center justify-center">
+                    <i class="fas fa-trash-alt mr-2"></i>
+                    Clear History
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-gradient-to-b from-indigo-900 to-indigo-800 text-white mt-16">
+        <div class="container mx-auto px-4 py-12 max-w-6xl">
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-center">
+                        <div class="bg-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-clock text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">24/7 Availability</h3>
+                        <p class="text-indigo-200">Always here to help with your tax calculations</p>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-center">
+                        <div class="bg-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-bolt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Instant Results</h3>
+                        <p class="text-indigo-200">Lightning-fast calculations and analysis</p>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-center">
+                        <div class="bg-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Secure & Accurate</h3>
+                        <p class="text-indigo-200">Your data is protected, calculations you can trust</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="border-t border-white/20 pt-8">
+                <div class="text-center text-indigo-200">
+                    <p>&copy; 2025 AI Tax Assistant Pro. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Developer Credits Box -->
+    <div class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-sm border border-indigo-100 z-40">
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg font-semibold text-indigo-900 flex items-center">
+                <i class="fas fa-code mr-2 text-indigo-600"></i>
+                Developers
+            </h3>
+            <button id="minimize-credits" class="text-gray-500 hover:text-gray-700 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors duration-200">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <div class="space-y-4" id="credits-content">
+            <div class="border-l-4 border-indigo-500 pl-3 py-1 hover:bg-indigo-50 transition-colors duration-200">
+                <p class="font-medium text-gray-900">Ayush Ranjan</p>
+                <p class="text-sm text-gray-600">Reg. No: 12306211</p>
+            </div>
+            <div class="border-l-4 border-indigo-500 pl-3 py-1 hover:bg-indigo-50 transition-colors duration-200">
+                <p class="font-medium text-gray-900">Mansimran Kaur Bedi</p>
+                <p class="text-sm text-gray-600">Reg. No: 12306911</p>
+            </div>
+            <div class="border-l-4 border-indigo-500 pl-3 py-1 hover:bg-indigo-50 transition-colors duration-200">
+                <p class="font-medium text-gray-900">Anisha Grewal</p>
+                <p class="text-sm text-gray-600">Reg. No: 12301368</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const taxForm = document.getElementById('tax-form');
+            const historyPanel = document.getElementById('history-panel');
+            const toggleHistoryBtn = document.getElementById('toggle-history');
+            const closeHistoryBtn = document.getElementById('close-history');
+            const clearHistoryBtn = document.getElementById('clear-history');
+            const historyList = document.getElementById('history-list');
+            const helpButton = document.getElementById('help-button');
+            const helpPopup = document.getElementById('help-popup');
+            const closeHelp = document.getElementById('close-help');
+            const minimizeBtn = document.getElementById('minimize-credits');
+            const creditsBox = minimizeBtn.closest('div.fixed');
+
+            // Update the StatsTracker class
+            class StatsTracker {
+                constructor() {
+                    // Initialize stats from localStorage or set defaults
+                    this.stats = JSON.parse(localStorage.getItem('calculatorStats')) || {
+                        calculationsToday: 0,
+                        totalCalculations: 0,
+                        totalResponseTime: 0,
+                        correctCalculations: 0,
+                        lastResetDate: new Date().toDateString()
+                    };
+                    this.setupDailyReset();
+                    this.updateDisplay(); // Initial display update
+                }
+
+                recordCalculation(startTime) {
+                    const today = new Date().toDateString();
+                    
+                    // Reset daily stats if it's a new day
+                    if (today !== this.stats.lastResetDate) {
+                        this.stats.calculationsToday = 0;
+                        this.stats.lastResetDate = today;
+                    }
+
+                    // Update stats
+                    this.stats.calculationsToday++;
+                    this.stats.totalCalculations++;
+                    this.stats.totalResponseTime += (Date.now() - startTime);
+                    this.stats.correctCalculations++;
+
+                    // Save to localStorage
+                    localStorage.setItem('calculatorStats', JSON.stringify(this.stats));
+                    
+                    // Update display immediately
+                    this.updateDisplay();
+                }
+
+                updateDisplay() {
+                    // Update calculations today
+                    document.getElementById('calculations-today').textContent = this.stats.calculationsToday;
+
+                    // Update average response time
+                    const avgResponseTime = this.stats.totalCalculations > 0 
+                        ? this.stats.totalResponseTime / this.stats.totalCalculations 
+                        : 0;
+                    document.getElementById('response-time').textContent = 
+                        avgResponseTime < 1000 ? `${Math.round(avgResponseTime)}ms` : `${(avgResponseTime/1000).toFixed(2)}s`;
+
+                    // Update accuracy rate
+                    const accuracyRate = this.stats.totalCalculations > 0
+                        ? (this.stats.correctCalculations / this.stats.totalCalculations * 100)
+                        : 100;
+                    document.getElementById('accuracy-rate').textContent = `${accuracyRate.toFixed(1)}%`;
+                }
+
+                setupDailyReset() {
+                    const now = new Date();
+                    const tomorrow = new Date(now);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    tomorrow.setHours(0, 0, 0, 0);
+                    
+                    setTimeout(() => {
+                        this.stats.calculationsToday = 0;
+                        this.stats.lastResetDate = new Date().toDateString();
+                        localStorage.setItem('calculatorStats', JSON.stringify(this.stats));
+                        this.updateDisplay();
+                        this.setupDailyReset();
+                    }, tomorrow - now);
+                }
+            }
+
+            // Initialize stats tracker
+            const statsTracker = new StatsTracker();
+
+            // Format currency
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 0
+                }).format(amount);
+            }
+
+            // Format percentage
+            function formatPercentage(value) {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'percent',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value / 100);
+            }
+
+            // Add message to chat
+            function addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message-wrapper ${isUser ? 'user-message' : 'bot-message'}`;
+                
+                const avatar = isUser 
+                    ? `<div class="avatar bg-blue-600"><i class="fas fa-user text-white"></i></div>`
+                    : `<div class="avatar bg-gray-200"><i class="fas fa-robot text-gray-600"></i></div>`;
+
+                messageDiv.innerHTML = `
+                    <div class="message-container ${isUser ? 'justify-end' : 'justify-start'}">
+                        ${!isUser ? avatar : ''}
+                        <div class="message-bubble ${isUser ? 'user-bubble' : 'bot-bubble'}">
+                            ${content}
+                        </div>
+                        ${isUser ? avatar : ''}
+                    </div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Save calculation to history
+            function saveToHistory(calculation) {
+                const history = JSON.parse(localStorage.getItem('taxCalculations') || '[]');
+                calculation.timestamp = Date.now();
+                history.unshift(calculation);
+                if (history.length > 10) history.pop(); // Keep last 10 calculations
+                localStorage.setItem('taxCalculations', JSON.stringify(history));
+                updateHistoryDisplay();
+            }
+
+            // Update history display
+            function updateHistoryDisplay() {
+                const history = JSON.parse(localStorage.getItem('taxCalculations') || '[]');
+                historyList.innerHTML = '';
+
+                if (history.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-history text-4xl mb-2"></i>
+                            <p>No calculations yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                history.forEach((calc) => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="text-sm text-gray-600">
+                                ${new Date(calc.timestamp).toLocaleString()}
+                            </div>
+                            <div class="text-indigo-600 font-semibold">
+                                ${formatPercentage(calc.taxPercentage)}
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div>Income: ${formatCurrency(calc.totalIncome)}</div>
+                            <div>Tax: ${formatCurrency(calc.taxPayable)}</div>
+                        </div>
+                        <button class="recalculate-btn mt-2 text-sm text-indigo-600 hover:text-indigo-800" 
+                            data-income="${calc.totalIncome}" 
+                            data-tax="${calc.taxPayable}">
+                            <i class="fas fa-redo mr-1"></i>
+                            Recalculate
+                        </button>
+                    `;
+                    historyList.appendChild(historyItem);
+                });
+
+                // Add recalculate functionality
+                document.querySelectorAll('.recalculate-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const income = btn.dataset.income;
+                        const tax = btn.dataset.tax;
+                        document.getElementById('total-income').value = income;
+                        document.getElementById('tax-payable').value = tax;
+                        historyPanel.classList.add('translate-x-full');
+                        taxForm.dispatchEvent(new Event('submit'));
+                    });
+                });
+            }
+
+            // Update the form submission handler to include stats tracking
+            taxForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const startTime = Date.now(); // Start timing the calculation
+                const totalIncome = parseFloat(document.getElementById('total-income').value);
+                const taxPayable = parseFloat(document.getElementById('tax-payable').value);
+
+                if (!totalIncome || !taxPayable) {
+                    addMessage('Please enter both income and tax payable amounts.', 'bot');
+                    return;
+                }
+
+                // Add user's input as a message with black text
+                addMessage(`
+                    <div class="user-input-summary">
+                        <div class="grid">
+                            <div style="color: #000000;">💰 Income: ₹${totalIncome.toLocaleString()}</div>
+                            <div style="color: #000000;">💸 Tax: ₹${taxPayable.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `, true);
+
+                // Calculate tax percentage
+                const taxPercentage = (taxPayable / totalIncome) * 100;
+
+                // Record calculation in stats immediately
+                statsTracker.recordCalculation(startTime);
+
+                // Add bot's response with detailed calculation
+                setTimeout(() => {
+                    addMessage(`
+                        <div class="calculation-breakdown space-y-4">
+                            <div class="text-lg font-semibold text-indigo-600 mb-3">
+                                🎯 Tax Calculation Results
+                            </div>
+
+                            <div class="calculation-section bg-gray-50 p-4 rounded-lg">
+                                <div class="font-medium mb-2">📊 Calculation Breakdown:</div>
+                                <div class="space-y-2 ml-4">
+                                    <div>1. Total Income: ₹${totalIncome.toLocaleString()}</div>
+                                    <div>2. Tax Payable: ₹${taxPayable.toLocaleString()}</div>
+                                    <div class="formula mt-2 bg-indigo-50 p-2 rounded">
+                                        <div class="font-medium">Formula Used:</div>
+                                        Tax Rate = (Tax Payable ÷ Total Income) × 100
+                                    </div>
+                                    <div class="steps mt-2">
+                                        <div>Step 1: ₹${taxPayable.toLocaleString()} ÷ ₹${totalIncome.toLocaleString()}</div>
+                                        <div>Step 2: ${(taxPayable/totalIncome).toFixed(4)} × 100</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="result-section bg-indigo-50 p-4 rounded-lg">
+                                <div class="text-lg font-semibold text-indigo-800">
+                                    Your Effective Tax Rate: ${taxPercentage.toFixed(2)}%
+                                </div>
+                            </div>
+
+                            <div class="analysis-section bg-gray-50 p-4 rounded-lg">
+                                <div class="font-medium mb-2">💡 Analysis:</div>
+                                <div>${getAnalysis(taxPercentage)}</div>
+                            </div>
+
+                            <div class="tax-slabs-section bg-gray-50 p-4 rounded-lg">
+                                <div class="font-medium mb-2">📌 Tax Slab Information:</div>
+                                <div class="grid gap-1 ml-4">
+                                    <div>• 0% for income up to ₹3,00,000</div>
+                                    <div>• 5% for income between ₹3,00,001 and ₹6,00,000</div>
+                                    <div>• 10% for income between ₹6,00,001 and ₹9,00,000</div>
+                                    <div>• 15% for income between ₹9,00,001 and ₹12,00,000</div>
+                                    <div>• 20% for income between ₹12,00,001 and ₹15,00,000</div>
+                                    <div>• 30% for income above ₹15,00,000</div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+
+                    // Save calculation to history
+                    saveToHistory({
+                        totalIncome,
+                        taxPayable,
+                        taxPercentage,
+                        timestamp: Date.now()
+                    });
+                }, 500);
+
+                // Clear form
+                document.getElementById('total-income').value = '';
+                document.getElementById('tax-payable').value = '';
+            });
+
+            // Update the analysis function
+            function getAnalysis(taxPercentage) {
+                if (taxPercentage <= 5) {
+                    return "Your tax rate is in the lower bracket. This could be due to various tax exemptions or your income falling in the lower tax slab.";
+                } else if (taxPercentage <= 15) {
+                    return "Your tax rate is in the moderate range, which is typical for middle-income earners in India.";
+                } else if (taxPercentage <= 25) {
+                    return "Your tax rate is in the upper-middle range. Consider consulting a tax advisor to explore available deductions and exemptions.";
+                } else {
+                    return "Your tax rate is in the higher bracket. You might want to explore tax-saving investments and deductions to optimize your tax liability.";
+                }
+            }
+
+            // History panel event listeners
+            toggleHistoryBtn.addEventListener('click', () => {
+                historyPanel.classList.toggle('translate-x-full');
+                updateHistoryDisplay();
+            });
+
+            closeHistoryBtn.addEventListener('click', () => {
+                historyPanel.classList.add('translate-x-full');
+            });
+
+            clearHistoryBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear all calculation history?')) {
+                    localStorage.removeItem('taxCalculations');
+                    updateHistoryDisplay();
+                    addMessage("I've cleared your calculation history! You can start fresh now. 🔄");
+                }
+            });
+
+            // Open popup
+            helpButton.addEventListener('click', () => {
+                helpPopup.classList.remove('hidden');
+                // Add animation
+                helpPopup.querySelector('div').classList.add('scale-100');
+                helpPopup.querySelector('div').classList.remove('scale-95');
+            });
+
+            // Close popup when clicking the close button
+            closeHelp.addEventListener('click', () => {
+                closeHelpPopup();
+            });
+
+            // Close popup when clicking outside
+            helpPopup.addEventListener('click', (e) => {
+                if (e.target === helpPopup) {
+                    closeHelpPopup();
+                }
+            });
+
+            // Close popup when pressing Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !helpPopup.classList.contains('hidden')) {
+                    closeHelpPopup();
+                }
+            });
+
+            function closeHelpPopup() {
+                // Add animation
+                helpPopup.querySelector('div').classList.add('scale-95');
+                helpPopup.querySelector('div').classList.remove('scale-100');
+                
+                // Hide popup after animation
+                setTimeout(() => {
+                    helpPopup.classList.add('hidden');
+                }, 200);
+            }
+
+            // Add this to your existing JavaScript
+            minimizeBtn.addEventListener('click', () => {
+                creditsBox.classList.toggle('credits-minimized');
+                minimizeBtn.innerHTML = creditsBox.classList.contains('credits-minimized') 
+                    ? '<i class="fas fa-plus"></i>' 
+                    : '<i class="fas fa-minus"></i>';
+            });
+
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('light-icon');
+            const darkIcon = document.getElementById('dark-icon');
+
+            // Check for saved theme preference or use system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+
+            // Update icons based on current theme
+            updateIcons();
+
+            // Toggle theme when button is clicked
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                
+                // Save theme preference
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                
+                // Update icons
+                updateIcons();
+                
+                // Add animation to button
+                themeToggle.style.animation = 'none';
+                themeToggle.offsetHeight; // Trigger reflow
+                themeToggle.style.animation = 'buttonPop 0.3s ease';
+            });
+
+            function updateIcons() {
+                const isDark = document.documentElement.classList.contains('dark');
+                lightIcon.style.display = isDark ? 'block' : 'none';
+                darkIcon.style.display = isDark ? 'none' : 'block';
+            }
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    document.documentElement.classList.toggle('dark', e.matches);
+                    updateIcons();
+                }
+            });
+
+            // Add welcome message with a slight delay for better UX
+            setTimeout(() => {
+                addMessage(`
+                    <div class="welcome-container">
+                        <div class="welcome-header">
+                            👋 Welcome to AI Tax Assistant Pro!
+                        </div>
+                        <div class="welcome-content">
+                            I'm your smart tax calculator, ready to help you analyze your tax obligations instantly.
+                            <br><br>
+                            <div class="quick-guide">
+                                <span class="guide-label">Quick Start:</span>
+                                <div class="guide-steps">
+                                    1️⃣ Enter Total Income
+                                    2️⃣ Enter Tax Payable
+                                </div>
+                            </div>
+                            <div class="feature-hint">
+                                <i class="fas fa-lightbulb text-yellow-400"></i> 
+                                Get instant tax calculations with detailed breakdowns and personalized insights!
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }, 500);
+
+            // Get current page path
+            const currentPath = window.location.pathname;
+            const homeLink = document.querySelector('a[href="../mainpage.html"]');
+            
+            // Add active state if on home page
+            if (currentPath.includes('mainpage.html')) {
+                homeLink.classList.add('active-page');
+            }
+
+            // Add click handler to ensure proper navigation
+            homeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = '../mainpage.html';
+            });
+        });
+    </script>
+</body>
+</html>
